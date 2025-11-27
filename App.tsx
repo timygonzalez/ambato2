@@ -1,29 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import Background from './components/Background';
-import Newsletter from './components/Newsletter';
 import Features from './components/Features';
-import { APP_NAME, TRANSLATIONS, SOCIAL_LINKS } from './constants';
-import { Twitter, Instagram, Linkedin, MapPin } from 'lucide-react';
+import { APP_NAME, CONTENT, SOCIAL_LINKS, CONTACT_EMAIL } from './constants';
+import { Twitter, Instagram, Linkedin, MapPin, Mail } from 'lucide-react';
 
 const App: React.FC = () => {
   const [mounted, setMounted] = useState(false);
-  const [lang, setLang] = useState<'es' | 'en'>('es');
 
   useEffect(() => {
     setMounted(true);
+    document.title = `${APP_NAME} | Próximamente`;
   }, []);
 
-  useEffect(() => {
-    if (lang === 'es') {
-      document.title = `${APP_NAME} | Próximamente`;
-    } else {
-      document.title = `${APP_NAME} | Coming Soon`;
-    }
-  }, [lang]);
-
   if (!mounted) return null;
-
-  const t = TRANSLATIONS[lang];
 
   return (
     <main className="min-h-screen relative flex flex-col justify-between overflow-x-hidden font-sans text-brand-light">
@@ -38,32 +27,7 @@ const App: React.FC = () => {
           <span className="font-serif text-2xl tracking-wide font-medium">{APP_NAME}</span>
         </div>
         
-        <div className="flex items-center space-x-8">
-          <nav className="hidden md:flex space-x-6 text-sm font-medium text-gray-300">
-            <a href="#" className="hover:text-brand-gold transition-colors">{t.nav.about}</a>
-            <a href="#" className="hover:text-brand-gold transition-colors">{t.nav.contact}</a>
-          </nav>
-
-          {/* Language Toggle */}
-          <div className="flex items-center border border-white/20 rounded-full p-1 bg-white/5 backdrop-blur-sm">
-            <button 
-              onClick={() => setLang('es')} 
-              className={`px-3 py-1 rounded-full text-xs font-bold transition-all duration-300 ${
-                lang === 'es' ? 'bg-brand-gold text-brand-dark shadow-sm' : 'text-gray-400 hover:text-white'
-              }`}
-            >
-              ES
-            </button>
-            <button 
-              onClick={() => setLang('en')} 
-              className={`px-3 py-1 rounded-full text-xs font-bold transition-all duration-300 ${
-                lang === 'en' ? 'bg-brand-gold text-brand-dark shadow-sm' : 'text-gray-400 hover:text-white'
-              }`}
-            >
-              EN
-            </button>
-          </div>
-        </div>
+        {/* Navigation removed as requested */}
       </header>
 
       {/* Hero Content */}
@@ -75,33 +39,42 @@ const App: React.FC = () => {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-gold opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-gold"></span>
             </span>
-            <span className="text-xs font-medium uppercase tracking-wider text-brand-gold">{t.comingSoon}</span>
+            <span className="text-xs font-medium uppercase tracking-wider text-brand-gold">{CONTENT.comingSoon}</span>
           </div>
 
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-medium tracking-tight text-white animate-fade-in-up delay-100 leading-tight">
-            {lang === 'es' ? 'Redefiniendo ' : 'Redefining '} <br />
+            {CONTENT.titlePrefix} <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-gold to-white">
-              {lang === 'es' ? 'el Vivir' : 'Living'}
-            </span> {lang === 'es' ? 'en Ambato' : 'in Ambato'}
+              {CONTENT.titleHighlight}
+            </span> {CONTENT.titleSuffix}
           </h1>
           
           <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed animate-fade-in-up delay-100 font-light">
-            {t.tagline}
+            {CONTENT.tagline}
           </p>
 
-          <div className="pt-8 w-full">
-            <Newsletter content={t.newsletter} />
+          <div className="pt-8 w-full flex flex-col items-center animate-fade-in-up delay-200">
+            <a 
+               href={`mailto:${CONTACT_EMAIL}`}
+               className="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-white transition-all duration-300 bg-brand-gold rounded-md hover:bg-brand-goldHover shadow-lg hover:shadow-xl hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-gold"
+             >
+               <Mail className="w-5 h-5 mr-3" />
+               <span className="font-serif tracking-wide">{CONTACT_EMAIL}</span>
+             </a>
+             <p className="mt-4 text-sm text-gray-400">
+               Contáctenos directamente para consultas sobre precios y transferencia.
+             </p>
           </div>
         </div>
 
-        <Features items={t.features} />
+        <Features items={CONTENT.features} />
       </div>
 
       {/* Footer */}
       <footer className="relative z-30 py-8 px-6 border-t border-white/5 w-full bg-brand-dark/30 backdrop-blur-md">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-sm text-gray-500">
-            &copy; {new Date().getFullYear()} {APP_NAME} Real Estate. {t.footer.rights}
+            &copy; {new Date().getFullYear()} {APP_NAME} Real Estate. {CONTENT.footer.rights}
           </div>
           
           <div className="flex items-center space-x-6">
@@ -118,7 +91,7 @@ const App: React.FC = () => {
 
           <div className="flex items-center text-sm text-gray-500">
             <MapPin className="w-4 h-4 mr-2" />
-            <span>{t.footer.location}</span>
+            <span>{CONTENT.footer.location}</span>
           </div>
         </div>
       </footer>

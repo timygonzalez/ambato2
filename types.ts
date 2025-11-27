@@ -1,29 +1,6 @@
-export enum SubscriptionStatus {
-  IDLE = 'IDLE',
-  LOADING = 'LOADING',
-  SUCCESS = 'SUCCESS',
-  ERROR = 'ERROR'
-}
-
 export interface FeatureData {
   title: string;
   description: string;
-}
-
-export interface NewsletterContent {
-  placeholder: string;
-  button: string;
-  processing: string;
-  successTitle: string;
-  successMessage: string;
-  registerAnother: string;
-  errorEmail: string;
-  subtext: string;
-}
-
-export interface NavigationContent {
-  about: string;
-  contact: string;
 }
 
 export interface FooterContent {
@@ -31,12 +8,30 @@ export interface FooterContent {
   location: string;
 }
 
-export interface TranslationContent {
+export enum SubscriptionStatus {
+  IDLE = 'IDLE',
+  LOADING = 'LOADING',
+  SUCCESS = 'SUCCESS',
+  ERROR = 'ERROR',
+}
+
+export interface NewsletterContent {
+  placeholder: string;
+  button: string;
+  processing: string;
+  subtext: string;
+  successTitle: string;
+  successMessage: string;
+  registerAnother: string;
+  errorEmail: string;
+}
+
+export interface AppContent {
   comingSoon: string;
-  title: string;
+  titlePrefix: string;
+  titleHighlight: string;
+  titleSuffix: string;
   tagline: string;
-  nav: NavigationContent;
-  newsletter: NewsletterContent;
   features: FeatureData[];
   footer: FooterContent;
 }

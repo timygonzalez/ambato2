@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Key, Shield } from 'lucide-react';
+import { Award, TrendingUp, Shield } from 'lucide-react';
 import { FeatureData } from '../types';
 
 interface FeaturesProps {
@@ -8,8 +8,8 @@ interface FeaturesProps {
 
 const Features: React.FC<FeaturesProps> = ({ items }) => {
   const icons = [
-    <Home className="w-6 h-6 text-brand-gold" key="home" />,
-    <Key className="w-6 h-6 text-brand-gold" key="key" />,
+    <Award className="w-6 h-6 text-brand-gold" key="award" />,
+    <TrendingUp className="w-6 h-6 text-brand-gold" key="trending" />,
     <Shield className="w-6 h-6 text-brand-gold" key="shield" />
   ];
 

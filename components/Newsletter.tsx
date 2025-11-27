@@ -3,6 +3,7 @@ import { SubscriptionStatus, NewsletterContent } from '../types';
 import Button from './Button';
 import Input from './Input';
 import { Mail, CheckCircle, AlertCircle } from 'lucide-react';
+import { FORM_ENDPOINT } from '../constants';
 
 interface NewsletterProps {
   content: NewsletterContent;
@@ -25,11 +26,44 @@ const Newsletter: React.FC<NewsletterProps> = ({ content }) => {
     setStatus(SubscriptionStatus.LOADING);
     setErrorMessage('');
 
-    // Simulate API call
-    setTimeout(() => {
-      setStatus(SubscriptionStatus.SUCCESS);
-      setEmail('');
-    }, 1500);
+    // If FORM_ENDPOINT is configured, use it. Otherwise simulate.
+    if (FORM_ENDPOINT && FORM_ENDPOINT.startsWith('http')) {
+      try {
+        const response = await fetch(FORM_ENDPOINT, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({ email: email })
+        });
+
+        if (response.ok) {
+          setStatus(SubscriptionStatus.SUCCESS);
+          setEmail('');
+        } else {
+          const data = await response.json();
+          if (Object.prototype.hasOwnProperty.call(data, 'errors')) {
+            throw new Error(data["errors"].map((error: any) => error["message"]).join(", "));
+          } else {
+            throw new Error("Error al enviar el formulario.");
+          }
+        }
+      } catch (error) {
+        setStatus(SubscriptionStatus.ERROR);
+        setErrorMessage("Hubo un problema enviando su correo. Por favor intente de nuevo.");
+        console.error("Submission error:", error);
+      }
+    } else {
+      // Simulation Mode (Default if no endpoint is configured)
+      console.log("SIMULATION MODE: Email captured:", email);
+      console.log("To collect real emails, configure FORM_ENDPOINT in constants.ts");
+      
+      setTimeout(() => {
+        setStatus(SubscriptionStatus.SUCCESS);
+        setEmail('');
+      }, 1500);
+    }
   }, [email, content.errorEmail]);
 
   if (status === SubscriptionStatus.SUCCESS) {
@@ -60,6 +94,7 @@ const Newsletter: React.FC<NewsletterProps> = ({ content }) => {
             </div>
             <Input
               type="email"
+              name="email" // Important for form services
               placeholder={content.placeholder}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
