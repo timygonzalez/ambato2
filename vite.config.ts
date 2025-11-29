@@ -1,3 +1,8 @@
+export default defineConfig({
+  base: '/',
+  plugins: [react()],
+})
+    
 import path from 'path';
 import { defineConfig, loadEnv } from 'vite';
 
